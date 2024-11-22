@@ -6,7 +6,7 @@ const int echoPin = 5;
 unsigned long start,end,time;
 float target=9.5;
 float I = 0; 
-float duration, distance,lastDistance,filteredDistance,lastfilteredDistance,PD,P,D;
+float duration, distance,lastDistance,filteredDistance,lastfilteredDistance,PID,P,D;
 int analogWS;
 
 
@@ -93,17 +93,17 @@ void loop() {
   float  DF = ( filteredDistance - lastfilteredDistance)/time*1000;
   lastDistance = distance; 
   lastfilteredDistance = filteredDistance ; 
-  PD= 97 *P + 18 *DF + 3 *I ;  
-  if (PD > 255) {
-  PD = 255;
+  PID= 97 *P + 18 *DF + 3 *I ;  
+  if (PID > 255) {
+  PID = 255;
   }  
-  else if (PD<5) {
+  else if (PID<5) {
   digitalWrite(pumpOnOff1, LOW);
   digitalWrite(pumpOnOff2,LOW);
-  PD = 0;
+  PID = 0;
   }
   
-  digitalWrite(pumpSpeed, int (PD)) ;
+  digitalWrite(pumpSpeed, int (PID)) ;
 
   Serial.print("DF:");
   Serial.print(DF);
@@ -111,8 +111,8 @@ void loop() {
   Serial.print("P:");
   Serial.print(P);
   Serial.print("\t");
-  Serial.print("PD:");
-  Serial.print(PD/2.55);
+  Serial.print("PID:");
+  Serial.print(PID);
   Serial.print("\t");
   Serial.print("distance:");
   Serial.println(distance); 
